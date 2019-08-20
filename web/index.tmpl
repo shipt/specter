@@ -1,0 +1,31 @@
+{{define "mpapi"}}
+<head>
+  <meta charset="utf-8">
+  <title>Specter</title>
+
+  <!--Scripts-->
+  
+  <script> var mpapi = {{.}} </script>
+  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src='https://api.mapbox.com/mapbox.js/v3.2.0/mapbox.js'></script>
+
+  <!--CSS LINKS-->
+  <link href='https://api.mapbox.com/mapbox.js/v3.2.0/mapbox.css' rel='stylesheet' />
+  <link href='public/index.css' rel='stylesheet'/>
+</head>
+
+<body>
+  <div id="app"></div>
+
+  <!-- Production - `npm run build` -->
+  <script src='public/lib/react.min.js'></script>
+  <script src='public/lib/react-dom.min.js'></script>
+  <script src="public/app.min.js?v=2.0.3"></script>
+
+  <!-- DEV ONLY -->
+  <!-- <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src='public/lib/babel.min.js'></script>
+  <script type="text/babel" src="public/app.dev.js"></script> -->
+</body>
+{{end}}
