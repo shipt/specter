@@ -1,6 +1,6 @@
 {
   "name": "Specter",
-  "version": "2.0.3",
+  "version": "3.0.0",
   "description": "Attack map style to display Shipt traffic",
   "main": "app.dev.js",
   "directories": {
@@ -17,5 +17,8 @@
     "babel-preset-minify": "^0.5.0",
     "babel-preset-react-app": "^3.1.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "braces": "^3.0.2",
+    "lodash": "^4.17.15"
+  }
 }
