@@ -4,7 +4,7 @@
 
 Specter is an attack map style visualization that parses nginx access logs. Specter then displays the source ip's location, the nginx's ip's location, and the http status on a world map. 
 
-To read more about, how to run, and how to develop Specter, check out our [wiki](https://github.com/newshipt/specter/wiki).
+To read more about, how to run, and how to develop Specter, check out our [wiki](https://github.com/shipt/specter/wiki).
 
 ## Table of Contents
   - [Getting Started](#getting-started)
@@ -13,10 +13,10 @@ To read more about, how to run, and how to develop Specter, check out our [wiki]
       - [Golang](#golang)
       - [Frontend](#frontend-web/public)
     - [Installing](#installing)
-      - [Running Specter in your development environment](#running-specter-in-your-development-environment)
-    - [Running the tests](#running-the-tests)
-      - [What we test](#what-we-test)
-      - [Coding style](#coding-style)
+      - [Running Specter in Your Development Environment](#running-specter-in-your-development-environment)
+    - [Running the Tests](#running-the-tests)
+      - [What We Test](#what-we-test)
+      - [Coding Style](#coding-style)
   - [Deployment](#deployment)
   - [Attributions](#attributions)
   - [Contributing](#contributing)
@@ -72,7 +72,7 @@ npm run build
 
 - Your code editor should be setup to run tests on save, but to run the tests manually, you can run go test ./... from the local repository directory to run all tests. To run just one test, run go test ./dir/package.
 
-- #### What we test
+- #### What We Test
 
    - The unit tests in this repo test our code, not code brought in though packages. 
 
@@ -81,11 +81,11 @@ npm run build
    - However, in the same package, we do test the processLog function since it contains code that is untested elsewhere.   
 [Link](internal/dataServer/dataServer.go#L92)
 
-- #### Coding style
+- #### Coding Style
 
    - Just use the default [revive](https://github.com/mgechev/revive) configuration.
 
-## Building and running your own images.
+## Building and Running Your Own Images
 
 1. Ensure you have docker installed and working as expected. 
 2. Build Specter.Dockerfile
@@ -111,9 +111,9 @@ Note: You will probably want to set some other ENV vars in order to get steward 
 
 1. Download the appropriate version from the Releases(link when repo is made) page.
 2. Deploy the Specter package to where you plan on running the Specter Webserver.  
-  - Start Specter with the -db={{Where your GeoLite2-City database is}} -mbat={{Your MapBox Access Token}} flags.
+    - Start Specter with the -db={{Where your GeoLite2-City database is}} -mbat={{Your MapBox Access Token}} flags.
 3. Deploy the Specter-Data package to all nginx servers you wish to monitor.
-  - Start Specter-Data with the -log ./scripts/access.log flag and any other applicable flags.
+    - Start Specter-Data with the -log ./scripts/access.log flag and any other applicable flags.
 
 
 ## Attributions
