@@ -61,10 +61,8 @@ class App extends React.PureComponent {
     // read app version
     // MUST happen before HEAD /version, which polls every so often
     fetch('package.json')
-      .then(res => res.json())
-      .then(data => {
-        self.appVersion = data.version
-        this.setState({ appVersion: self.appVersion })
+      .then(res => {
+        self.appVersion = res.headers.get('Version')
       });
 
     this.setupWebSocket();
