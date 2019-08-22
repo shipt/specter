@@ -61,7 +61,7 @@ func (c *Client) parseResponse(body []byte) ([]byte, error) {
 	conn.HTTPStatus = rb.HTTPStatus
 
 	if ok := ipCache.Exist(conn.SrcIP); !ok {
-		// we have seen this ip before.
+		// we have not seen this ip before.
 		ipCache.Put(conn.SrcIP)
 		srcRecord, err := c.maxMind.LookupIP(conn.SrcIP)
 		if err != nil {
