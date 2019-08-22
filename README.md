@@ -102,14 +102,14 @@ npm run build
    ```
 4. Start the Specter docker image
    ```
-      docker run -e DB=./db/GeoLite2-City.mmdb -e MBAT=<<YOUR_MAPBOX_API_TOKEN>> -v <<FOLDER_WHERE_YOUR_GEOLITE2_MMDB_EXISTS>>:/go/src/github.com/newshipt/specter/db -p 1323:1323 <<YOUR_IMAGE_FROM_STEP_2>>
+      docker run -e DB=./db/GeoLite2-City.mmdb -e MBAT=<<YOUR_MAPBOX_API_TOKEN>> -v <<FOLDER_WHERE_YOUR_GEOLITE2_MMDB_EXISTS>>:/go/src/github.com/shipt/specter/db -p 1323:1323 <<YOUR_IMAGE_FROM_STEP_2>>
    ```
 5. Start the Specter-Data docker image
    ```
       docker run <<YOUR_IMAGE_FROM_STEP_3>>
    ```
 
-Note: You will probably want to set some other ENV vars in order to get steward working for you. The ENV vars can be found here: https://github.com/newshipt/specter/wiki/Running-Specter
+Note: You will probably want to set some other ENV vars in order to get steward working for you. The ENV vars can be found here: https://github.com/shipt/specter/wiki/Running-Specter
 
 ## Deployment
 
@@ -130,7 +130,7 @@ Please read our [CONTRIBUTING.md](./CONTRIBUTING.md) for details on our communit
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/newshipt/specter/tags).
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/shipt/specter/tags).
 
 To update versions, run the [provided python script](scripts/version.py) and follow the prompts.
 

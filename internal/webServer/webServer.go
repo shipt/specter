@@ -13,9 +13,9 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"github.com/newshipt/specter/internal/broadcast"
-	"github.com/newshipt/specter/internal/logprocessor"
-	"github.com/newshipt/specter/internal/maxmind"
+	"github.com/shipt/specter/internal/broadcast"
+	"github.com/shipt/specter/internal/logprocessor"
+	"github.com/shipt/specter/internal/maxmind"
 )
 
 // Template contains html/templates
@@ -58,7 +58,7 @@ func logs(lp *logprocessor.Client) func(c echo.Context) error {
 
 func version() func(c echo.Context) error {
 	return func(c echo.Context) error {
-		fileBytes, err := ioutil.ReadFile("/go/src/github.com/newshipt/specter/VERSION")
+		fileBytes, err := ioutil.ReadFile("/go/src/github.com/shipt/specter/VERSION")
 		if err != nil {
 			return err
 		}
