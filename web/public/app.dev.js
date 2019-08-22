@@ -62,7 +62,7 @@ class App extends React.PureComponent {
     // MUST happen before HEAD /version, which polls every so often
     fetch('/version', { method: 'HEAD' })
       .then(res => {
-         self.version = res.headers.get('Version')
+         self.appVersion = res.headers.get('Version')
       });
 
     this.setupWebSocket();
@@ -425,40 +425,40 @@ function drawOnCanvas(selection) {
   });
 };
 
-// // uses fetch with a timeout (if connection is lost)
-// function fetchVersionService(webSocket) {
-//   let didTimeOut = false;
-//   new Promise((resolve, reject) => {
-//     const timeout = setTimeout(() => {
-//       didTimeOut = true;
-//       reject(new Error('Request timed out'));
-//     }, CHECK_VERSION_TIMEOUT_MS);
+// uses fetch with a timeout (if connection is lost)
+function fetchVersionService(webSocket) {
+  let didTimeOut = false;
+  new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      didTimeOut = true;
+      reject(new Error('Request timed out'));
+    }, CHECK_VERSION_TIMEOUT_MS);
 
-//     fetch('/version', { method: 'HEAD' })
-//       .then(res => {
-//         // Clear the timeout as cleanup
-//         clearTimeout(timeout);
-//         if (didTimeOut) return;
-//         if (!res.ok) reject(new Error('Failed to connect'))
-//         // Auto-Refresh on update!
-//         // https://developer.mozilla.org/en-US/docs/Web/API/Location/reload
-//         const version = res.headers.get('Version')
-//         if (self.appVersion !== version) {
-//           location.reload(true);
-//         }
-//         resolve(res);
-//       })
-//       .catch(err => {
-//         // Rejection already happened with setTimeout
-//         if (didTimeOut) return;
-//         // Reject with error
-//         reject(err);
-//       });
-//   })
-//     .catch(err => {
-//       // since this uses the same service as WS, if this is down, then we've lost connection
-//       // so we should close the WS connection
-//       webSocket.close();
-//       logger(`fetchVersionService::${err.message}`)
-//     });
-// }
+    fetch('/version', { method: 'HEAD' })
+      .then(res => {
+        // Clear the timeout as cleanup
+        clearTimeout(timeout);
+        if (didTimeOut) return;
+        if (!res.ok) reject(new Error('Failed to connect'))
+        // Auto-Refresh on update!
+        // https://developer.mozilla.org/en-US/docs/Web/API/Location/reload
+        const version = res.headers.get('Version')
+        if (self.appVersion !== version) {
+          location.reload(true);
+        }
+        resolve(res);
+      })
+      .catch(err => {
+        // Rejection already happened with setTimeout
+        if (didTimeOut) return;
+        // Reject with error
+        reject(err);
+      });
+  })
+    .catch(err => {
+      // since this uses the same service as WS, if this is down, then we've lost connection
+      // so we should close the WS connection
+      webSocket.close();
+      logger(`fetchVersionService::${err.message}`)
+    });
+}
