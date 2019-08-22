@@ -35,12 +35,14 @@ These instructions will get you a copy of the project up and running on your loc
 
 - #### Golang
    - [Go version 1.11+](https://golang.org/)  
-   - For go dependencies we use [dep](https://github.com/golang/dep), so ```dep ensure``` will install all needed dependencies. 
+   - For go dependencies this project uses [dep](https://github.com/golang/dep), so ```dep ensure``` will install all needed dependencies. 
 
 #### Frontend (web/public)
    - [npm](https://www.npmjs.com) must be installed
 
 ```bash
+# Move into web/public
+cd web/public
 # Just once 
 npm install
 # Watch for changes during development
@@ -64,13 +66,15 @@ npm run build
    2. In a new console, from your local repository start the start the Specter data server
    ```bash
    go run cmd/specter-data/main.go -log ./scripts/access.log
+   ```
    3. (Optional) From your local repository start the start the load test.
    ```bash
    scripts/load.py
+   ```
 
 ### Running the Tests
 
-- Your code editor should be setup to run tests on save, but to run the tests manually, you can run go test ./... from the local repository directory to run all tests. To run just one test, run go test ./dir/package.
+- Your code editor should be setup to run tests on save, but to run the tests manually, you can run ```go test ./...``` from the local repository directory to run all tests. To run just one test, run ```go test ./dir/package```.
 
 - #### What We Test
 
