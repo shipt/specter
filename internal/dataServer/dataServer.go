@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/newshipt/specter/cmd"
+	"github.com/shipt/specter/cmd"
 
 	"github.com/namsral/flag"
 	"github.com/pkg/errors"
@@ -75,11 +75,14 @@ func getExternalIP() (net.IP, error) {
 }
 
 func tailFile(logFile string) (*tail.Tail, error) {
+	log.Debug("Starting file tail")
 	tail, err := tail.TailFile(logFile, tail.Config{Logger: tail.DiscardingLogger, Follow: true, ReOpen: true, Location: &tail.SeekInfo{Offset: 0, Whence: os.SEEK_END}})
+	log.Debugf("%+v\n", tail)
 	return tail, errors.Wrap(err, "Error tailing file")
 }
 
 func logReader(tail *tail.Tail) *tailReader {
+	log.Debug("Starting log reader")
 	return &tailReader{Tail: tail}
 }
 
@@ -90,16 +93,19 @@ func sendMessage(url string, mBytes []byte) error {
 }
 
 func processLog(reader ngninxLogReader, ip net.IP) (msg, error) {
-
 	rec, err := reader.Read()
+	log.Debug("Reading log entry")
 	if err == io.EOF {
+		log.Debug("reached EOF of log file")
 		return msg{}, nil
 	}
 	if err != nil {
 		return msg{}, errors.Wrap(err, "error reading the log file")
 	}
+	log.Debug("log entry not EOF")
 	// Process the record...
 	ra, err := rec.Field("remote_addr")
+	log.Debug("processing the log entry")
 	if err != nil {
 		log.WithFields(log.Fields{
 			"Error": err,
@@ -113,6 +119,7 @@ func processLog(reader ngninxLogReader, ip net.IP) (msg, error) {
 		}).Warn("error getting the status from the access.log")
 		return msg{}, nil
 	}
+	log.Debug("returning processed message")
 	return msg{SrcIP: ra, DstIP: ip.String(), HTTPStatus: s}, nil
 }
 
@@ -147,6 +154,7 @@ func Start() {
 	}
 
 	tail, err := tailFile(logFile)
+	log.Debug("Starting tailFile")
 	if err != nil {
 		log.WithFields(log.Fields{
 			"Error": err,
@@ -154,6 +162,7 @@ func Start() {
 	}
 
 	cf, err := os.Open(conf)
+	log.Debug("Opening config file")
 	if err != nil {
 		log.WithFields(log.Fields{
 			"Error": err,
@@ -162,6 +171,7 @@ func Start() {
 	defer cf.Close()
 
 	reader, err := gonx.NewNginxReader(logReader(tail), cf, format)
+	log.Debug("Reading config file")
 	if err != nil {
 		log.WithFields(log.Fields{
 			"Error": err,

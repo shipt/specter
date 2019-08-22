@@ -96,22 +96,6 @@
   version = "v1.7.4-pre"
 
 [[projects]]
-  branch = "master"
-  digest = "1:aafe6bf765884358257e6118c1bf9b980d85bb95b1942c25c08189578d740460"
-  name = "github.com/newshipt/specter"
-  packages = [
-    "cmd",
-    "internal/broadcast",
-    "internal/dataServer",
-    "internal/logprocessor",
-    "internal/maxmind",
-    "internal/ttlcache",
-    "internal/webServer",
-  ]
-  pruneopts = ""
-  revision = "0418cb6293768eb0912cecf917bda7bcce4fdb2c"
-
-[[projects]]
   digest = "1:7969da886be0911d00bbce51a36af03c5121fd9d734994ba98c41b6b0d83c15e"
   name = "github.com/oschwald/maxminddb-golang"
   packages = ["."]
@@ -208,13 +192,6 @@
     "github.com/labstack/echo",
     "github.com/labstack/echo/middleware",
     "github.com/namsral/flag",
-    "github.com/newshipt/specter/cmd",
-    "github.com/newshipt/specter/internal/broadcast",
-    "github.com/newshipt/specter/internal/dataServer",
-    "github.com/newshipt/specter/internal/logprocessor",
-    "github.com/newshipt/specter/internal/maxmind",
-    "github.com/newshipt/specter/internal/ttlcache",
-    "github.com/newshipt/specter/internal/webServer",
     "github.com/oschwald/maxminddb-golang",
     "github.com/pkg/errors",
     "github.com/satyrius/gonx",

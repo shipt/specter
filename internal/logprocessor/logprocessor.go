@@ -3,11 +3,11 @@ package logprocessor
 import (
 	"encoding/json"
 
-	"github.com/newshipt/specter/internal/ttlcache"
+	"github.com/shipt/specter/internal/ttlcache"
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/newshipt/specter/internal/maxmind"
+	"github.com/shipt/specter/internal/maxmind"
 )
 
 // Client contains the information needed to communicate with maxMind

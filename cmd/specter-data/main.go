@@ -6,7 +6,7 @@ import (
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/newshipt/specter/internal/dataServer"
+	"github.com/shipt/specter/internal/dataServer"
 )
 
 var logLevel string
