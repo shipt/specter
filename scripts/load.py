@@ -57,6 +57,7 @@ bodyBytesSent = '2105 '
 httpReferer = '"http://localhost:8080/" '
 httpUserAgent = '"Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16C104/ndbflbhxuptclhugenrdeeiocpjxvttm" '
 httpXForwardedFor = '"-" '
+requestID = '"foo" '
 requestTime = '"0.307" '
 upstreamResponseTime = '"0.296" '
 upstreamConnectTime = '"0.001"'
@@ -84,7 +85,7 @@ while True:
     statusList = [200] * twohundreds + [404] * fourErrs + [503] * fiveErrs
     status = random.choice(statusList)
     log = host + remoteAddr + "- " + remoteUser + timeLocal + request + str(status) + " " + bodyBytesSent + httpReferer + \
-        httpUserAgent + httpXForwardedFor + requestTime + \
+        httpUserAgent + httpXForwardedFor + requestID + requestTime + \
         upstreamResponseTime + upstreamConnectTime
     # Open access.log (create it if it doesnt exist) and set it to append mode.
     # Using with will autoclose the file, even if there is an exception.

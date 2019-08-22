@@ -52,7 +52,8 @@ func init() {
 
 func (t *tailReader) Read(b []byte) (int, error) {
 	if t.cur.Len() == 0 {
-		t.cur.WriteString((<-t.Lines).Text)
+		text := (<-t.Lines).Text
+		t.cur.WriteString(text)
 		t.cur.WriteByte('\n')
 	}
 
@@ -94,6 +95,7 @@ func sendMessage(url string, mBytes []byte) error {
 
 func processLog(reader ngninxLogReader, ip net.IP) (msg, error) {
 	rec, err := reader.Read()
+	log.Debugf("%+v", rec)
 	log.Debug("Reading log entry")
 	if err == io.EOF {
 		log.Debug("reached EOF of log file")
@@ -112,6 +114,7 @@ func processLog(reader ngninxLogReader, ip net.IP) (msg, error) {
 		}).Warn("error getting the remote address from the access.log")
 		return msg{}, nil
 	}
+	log.Debugf("ra: %s", ra)
 	s, err := rec.Field("status")
 	if err != nil {
 		log.WithFields(log.Fields{
@@ -119,6 +122,7 @@ func processLog(reader ngninxLogReader, ip net.IP) (msg, error) {
 		}).Warn("error getting the status from the access.log")
 		return msg{}, nil
 	}
+	log.Debugf("status: %s", s)
 	log.Debug("returning processed message")
 	return msg{SrcIP: ra, DstIP: ip.String(), HTTPStatus: s}, nil
 }
