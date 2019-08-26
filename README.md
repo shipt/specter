@@ -141,4 +141,3 @@ To update versions, run the [provided python script](scripts/version.py) and fol
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
