@@ -7,8 +7,10 @@ jobs:
     environment:
       - GOCACHE: "/tmp/go/cache"
       - DEP_VERSION: 0.4.1
+      - TEST_RESULTS: /tmp/test-results # path to where test results will be saved
     steps:
       - checkout
+      - run: mkdir -p $TEST_RESULTS # create the test results directory
       - restore_cache:
           key: gopkg-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
           paths:
@@ -33,12 +35,17 @@ jobs:
       - run:
           name: test
           command: |
-            ls -a
             mkdir -p $GOCACHE
             go build -v ./cmd/specter/main.go
             go build -v ./cmd/specter-data/main.go
-            go test -p 6 -race ./...
+            trap "go-junit-report <${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
+            go test -p 6 -race ./... | tee ${TEST_RESULTS}/go-test.out
       - save_cache:
           key: build-cache-{{ .Branch }}-{{ .Environment.CIRCLE_BUILD_NUM }}
           paths:
               - /tmp/go/cache
+      - store_artifacts: # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
+          path: /tmp/test-results
+          destination: raw-test-output
+      - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+          path: /tmp/test-results
