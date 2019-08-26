@@ -11,6 +11,7 @@ jobs:
     steps:
       - checkout
       - run: mkdir -p $TEST_RESULTS # create the test results directory
+      - run: go get github.com/jstemmer/go-junit-report
       - restore_cache:
           key: gopkg-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
           paths:
