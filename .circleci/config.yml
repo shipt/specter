@@ -35,7 +35,8 @@ jobs:
           command: |
             ls -a
             mkdir -p $GOCACHE
-            go build -v
+            go build -v ./cmd/specter/main.go
+            go build -v ./cmd/specter-data/main.go
             go test -p 6 -race ./...
       - save_cache:
           key: build-cache-{{ .Branch }}-{{ .Environment.CIRCLE_BUILD_NUM }}
