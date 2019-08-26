@@ -120,10 +120,10 @@ workflows:
       - build
   release:
     jobs:
+      - test
       - release:
           requires:
             - test
-            - build
           filters:
             branches:
               ignore: /.*/
