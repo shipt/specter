@@ -1,5 +1,5 @@
-# Specter
-
+# Specter 
+[![CircleCI](https://circleci.com/gh/shipt/specter/tree/master.svg?style=svg)](https://circleci.com/gh/shipt/specter/tree/master)
 ![Specter Screenshot](/readmeFiles/SpecterScreenShot.gif)
 
 Specter is an attack map style visualization that parses nginx access logs. Specter then displays the source ip's location, the nginx's ip's location, and the http status on a world map. 
