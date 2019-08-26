@@ -33,6 +33,7 @@ jobs:
       - run:
           name: test
           command: |
+            ls -a
             mkdir -p $GOCACHE
             go build -v
             go test -p 6 -race ./...
