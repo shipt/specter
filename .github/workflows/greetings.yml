@@ -1,0 +1,13 @@
+name: Greetings
+
+on: [pull_request, issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/first-interaction@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        issue-message: 'We see that this is your first issue, welcome! Please ensure that you followed the issue template, it makes it easier for us to resolve issues.'
+        pr-message: 'We see that this is your first PR, welcome! Please make sure that you have read and submitted the CLA, as we cannot approve a PR unless you signed one.' 
