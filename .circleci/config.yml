@@ -85,7 +85,6 @@ jobs:
           key: build-cache-{{ .Branch }}-{{ .Environment.CIRCLE_BUILD_NUM }}
           paths:
               - /tmp/go/cache
-      - run: curl -sL https://git.io/goreleaser | bash
   release:
     docker:
       - image: circleci/golang:1.10
@@ -121,8 +120,6 @@ workflows:
       - build
   release:
     jobs:
-      - test
-      - build
       - release:
           requires:
             - test
