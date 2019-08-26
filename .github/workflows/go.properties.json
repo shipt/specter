@@ -1,0 +1,6 @@
+ {
+    "name": "Specter Build",
+    "description": "Build specter.",
+    "iconName": "go",
+    "categories": ["Go"]
+}
