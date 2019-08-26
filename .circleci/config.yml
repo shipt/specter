@@ -88,6 +88,9 @@ jobs:
   release:
     docker:
       - image: circleci/golang:1.10
+    environment:
+      - GOCACHE: "/tmp/go/cache"
+      - DEP_VERSION: 0.4.1
     steps:
       - checkout
       - restore_cache:
