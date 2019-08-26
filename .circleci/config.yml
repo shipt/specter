@@ -86,7 +86,7 @@ jobs:
           paths:
               - /tmp/go/cache
   release:
-  working_directory: /go/src/github.com/shipt/specter
+    working_directory: /go/src/github.com/shipt/specter
     docker:
       - image: circleci/golang:1.10
     environment:
