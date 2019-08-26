@@ -12,7 +12,6 @@ jobs:
       - checkout
       - run: mkdir -p $TEST_RESULTS # create the test results directory
       - run: go get github.com/jstemmer/go-junit-report
-      - run: curl -sL https://git.io/goreleaser | bash
       - restore_cache:
           key: gopkg-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
           paths:
@@ -51,6 +50,7 @@ jobs:
           destination: raw-test-output
       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
           path: /tmp/test-results
+      - run: curl -sL https://git.io/goreleaser | bash
 workflows:
   version: 2
   release:
