@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: /go/src/github.com/your_company/your_app
+    working_directory: /go/src/github.com/shipt/specter
     docker:
       - image: circleci/golang:1.12
     environment:
