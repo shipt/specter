@@ -123,7 +123,7 @@ jobs:
             wget https://github.com/goreleaser/goreleaser/releases/download/v0.116.0/goreleaser_Linux_x86_64.tar.gz
             mkdir goreleaser
             tar -zxvf goreleaser_Linux_x86_64.tar.gz -C goreleaser
-            mv goreleaser/goreleaser /usr/local/bin/goreleaser
+            sudo mv goreleaser/goreleaser /usr/local/bin/goreleaser
             goreleaser --skip-validate --rm-dist --debug
 workflows:
   version: 2
