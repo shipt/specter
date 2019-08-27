@@ -1,0 +1,57 @@
+builds:
+  - 
+    id: "specter"
+    main: cmd/specter/main.go
+    binary: specter
+    env:
+    - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+  - 
+    id: "specter-data"
+    main: cmd/specter-data/main.go
+    binary: specter-data
+    env:
+    - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+archives:
+  -
+    id: "specter"
+    builds:
+    - specter
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+    name_template: "{{.Binary}}_{{.Version}}_{{.Os}}-{{.Arch}}"
+    replacements:
+      linux: linux
+      amd64: x86_64
+  -
+    id: "specter-data"
+    builds:
+    - specter-data
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+    name_template: "{{.Binary}}_{{.Version}}_{{.Os}}-{{.Arch}}"
+    replacements:
+      linux: linux
+      amd64: x86_64
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+   exclude:
+    - '^docs:'
+    - '^test:'
+    - 'README.md'
