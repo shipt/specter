@@ -9,7 +9,7 @@ jobs:
       - DEP_VERSION: 0.4.1
       - TEST_RESULTS: /tmp/test-results # path to where test results will be saved
       - GOMODULE: off #https://github.com/goreleaser/goreleaser/issues/1005
-      - GO111MODULE: off
+      #- GO111MODULE: off
     steps:
       - checkout
       - run: mkdir -p $TEST_RESULTS # create the test results directory
