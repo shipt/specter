@@ -31,6 +31,8 @@ jobs:
           command: |
             curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
             sudo apt install nodejs
+            npm uninstall -g babel
+            npm install --save-dev babel-cli
       - save_cache:
           key: gopkg-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
           paths:
