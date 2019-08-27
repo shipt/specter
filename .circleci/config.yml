@@ -29,8 +29,8 @@ jobs:
       - run:
           name: setup-node
           command: |
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
             sudo apt install nodejs
-            sudo apt install npm
       - save_cache:
           key: gopkg-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
           paths:
