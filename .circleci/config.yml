@@ -26,6 +26,11 @@ jobs:
                 chmod +x /go/bin/dep
                 /go/bin/dep ensure
             fi
+      - run:
+          name: setup-node
+          command: |
+            sudo apt install nodejs
+            sudo apt install npm
       - save_cache:
           key: gopkg-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
           paths:
@@ -41,6 +46,11 @@ jobs:
             mkdir -p $GOCACHE
             trap "go-junit-report <${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
             go test -p 6 -race ./... | tee ${TEST_RESULTS}/go-test.out
+      - run:
+          name: test frontend
+          command: |
+            cd web/public
+            npm run build
       - store_artifacts: # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
           path: /tmp/test-results
           destination: raw-test-output
