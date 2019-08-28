@@ -129,14 +129,7 @@ jobs:
               - build-cache-{{ .Branch }}-{{ .Environment.CIRCLE_PREVIOUS_BUILD_NUM }}
           paths:
               - /tmp/go/cache
-      - run:
-          name: install-and-run-goreleaser
-          command: |
-            wget https://github.com/goreleaser/goreleaser/releases/download/v0.116.0/goreleaser_Linux_x86_64.tar.gz
-            mkdir goreleaser
-            tar -zxvf goreleaser_Linux_x86_64.tar.gz -C goreleaser
-            sudo mv goreleaser/goreleaser /usr/local/bin/goreleaser
-            goreleaser --rm-dist --debug
+      - run: curl -sL https://git.io/goreleaser | bash
 workflows:
   version: 2
   test_and_build:
