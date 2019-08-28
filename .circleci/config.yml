@@ -26,13 +26,13 @@ jobs:
                 chmod +x /go/bin/dep
                 /go/bin/dep ensure -vendor-only
             fi
-      - run:
-          name: setup-node
-          command: |
-            curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-            sudo apt install nodejs
-            sudo npm uninstall -g babel
-            sudo npm install --save-dev babel-cli
+      # - run:
+      #     name: setup-node
+      #     command: |
+      #       curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+      #       sudo apt install nodejs
+      #       sudo npm uninstall -g babel
+      #       sudo npm install --save-dev babel-cli
       - save_cache:
           key: gopkg-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
           paths:
