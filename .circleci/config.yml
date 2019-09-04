@@ -98,8 +98,8 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: 
-        name: Build Specter Image
-        command: |
+          name: Build Specter Image
+          command: |
           docker build -t specter:latest -f /go/src/github.com/shipt/specter/specter.Dockerfile .
       - run:
           name: Archive Specter Image
