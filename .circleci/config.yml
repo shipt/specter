@@ -122,7 +122,7 @@ jobs:
           command: |
                 echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
                 IMAGE_TAG=${CIRCLE_TAG/v/''}
-                docker tag shipt/specter:latest specter:$IMAGE_TAG
+                docker tag shipt/specter:latest shipt/specter:$IMAGE_TAG
                 docker push shipt/specter:latest
                 docker push shipt/specter:$IMAGE_TAG
 
