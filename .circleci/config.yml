@@ -100,9 +100,12 @@ jobs:
           name: Build Specter Image
           command: |
                 docker build -t shipt/specter:latest -f ./specter.Dockerfile .
+                docker build -t shipt/specter-data:latest -f ./specter-data.Dockerfile .
       - run:
           name: Archive Specter Image
-          command: docker save -o specter.tar shipt/specter:latest
+          command: |
+                docker save -o specter.tar shipt/specter:latest
+                docker save -o specter-data.tar shipt/specter-data:latest
       - persist_to_workspace:
           root: .
           paths: 
@@ -116,15 +119,20 @@ jobs:
       - setup_remote_docker
       - run:
           name: Load Archived Image
-          command: docker load -i /tmp/workspace/specter.tar
+          command: |
+                docker load -i /tmp/workspace/specter.tar
+                docker load -i /tmp/workspace/specter-data.tar
       - run:
           name: Publish Docker Image
           command: |
                 echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
                 IMAGE_TAG=${CIRCLE_TAG/v/''}
                 docker tag shipt/specter:latest shipt/specter:$IMAGE_TAG
+                docker tag shipt/specter-data:latest shipt/specter-data:$IMAGE_TAG
                 docker push shipt/specter:latest
+                docker push shipt/specter-data:latest
                 docker push shipt/specter:$IMAGE_TAG
+                docker push shipt/specter-data:$IMAGE_TAG
 
   release:
     working_directory: /go/src/github.com/shipt/specter
