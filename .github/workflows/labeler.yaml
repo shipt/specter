@@ -1,5 +1,5 @@
 documentation:
-- *.md
+- "*.md"
 
 ci:
 - .circleci/*
@@ -27,7 +27,7 @@ web:
 - web/**/*
 
 dependencies:
-- *.toml
+- "*.toml"
 
 name: Labeler
 on: [pull_request]
