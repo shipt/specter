@@ -100,7 +100,7 @@ jobs:
       - run: 
           name: Build Specter Image
           command: |
-          docker build -t specter:latest -f /go/src/github.com/shipt/specter/specter.Dockerfile .
+                docker build -t specter:latest -f /go/src/github.com/shipt/specter/specter.Dockerfile .
       - run:
           name: Archive Specter Image
           command: docker save -o specter.tar specter:latest
