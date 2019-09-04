@@ -99,7 +99,7 @@ jobs:
       - run: 
           name: Build Specter Image
           command: |
-                docker build -t specter:latest -f ./specter.Dockerfile .
+                docker build -t shipt/specter:latest -f ./specter.Dockerfile .
       - run:
           name: Archive Specter Image
           command: docker save -o specter.tar specter:latest
@@ -122,9 +122,9 @@ jobs:
           command: |
                 echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
                 IMAGE_TAG=${CIRCLE_TAG/v/''}
-                docker tag specter:latest specter:$IMAGE_TAG
-                docker push specter:latest
-                docker push specter:$IMAGE_TAG
+                docker tag shipt/specter:latest specter:$IMAGE_TAG
+                docker push shipt/specter:latest
+                docker push shipt/specter:$IMAGE_TAG
 
   release:
     working_directory: /go/src/github.com/shipt/specter
