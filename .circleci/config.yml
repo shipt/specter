@@ -91,7 +91,6 @@ jobs:
           paths:
               - /tmp/go/cache
   build-docker: 
-    working_directory: /go/src/github.com/shipt/specter
     docker:
       - image: circleci/buildpack-deps:stretch
     steps:
@@ -100,7 +99,7 @@ jobs:
       - run: 
           name: Build Specter Image
           command: |
-                docker build -t specter:latest -f /go/src/github.com/shipt/specter/specter.Dockerfile .
+                docker build -t specter:latest -f ./specter.Dockerfile .
       - run:
           name: Archive Specter Image
           command: docker save -o specter.tar specter:latest
@@ -183,6 +182,7 @@ workflows:
       - publish-image:
           requires:
             - test
+            - build-docker
           filters:
             branches:
               ignore: /.*/
@@ -191,6 +191,7 @@ workflows:
       - release:
           requires:
             - test
+            - publish-image
           filters:
             branches:
               ignore: /.*/
