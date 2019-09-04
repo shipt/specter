@@ -1,4 +1,4 @@
-# Specter 
+# Specter  
 [![CircleCI](https://circleci.com/gh/shipt/specter/tree/master.svg?style=svg&circle-token=00862a45c139d2a1a28c93ca104e38a7a6e3e83e)](https://circleci.com/gh/shipt/specter/tree/master)
 ![Specter Screenshot](/readmeFiles/SpecterScreenShot.gif)
 
