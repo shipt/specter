@@ -102,7 +102,7 @@ jobs:
                 docker build -t shipt/specter:latest -f ./specter.Dockerfile .
       - run:
           name: Archive Specter Image
-          command: docker save -o specter.tar specter:latest
+          command: docker save -o specter.tar shipt/specter:latest
       - persist_to_workspace:
           root: .
           paths: 
