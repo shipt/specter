@@ -110,6 +110,7 @@ jobs:
           root: .
           paths: 
             - ./specter.tar
+            - ./specter-data.tar
   publish-image:
     docker:
       - image: circleci/buildpack-deps:stretch
