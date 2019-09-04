@@ -1,5 +1,9 @@
 documentation:
-- "*.md"
+- readmeFiles/*
+- ATTRIBUTIONS.md
+- CONTRIBUTING.md
+- README.md
+- LICENSE
 
 ci:
 - .circleci/*
@@ -27,7 +31,7 @@ web:
 - web/**/*
 
 dependencies:
-- "*.toml"
+- Gopkg.toml
 
 name: Labeler
 on: [pull_request]
