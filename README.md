@@ -1,5 +1,5 @@
-# Specter
-
+# Specter 
+[![CircleCI](https://circleci.com/gh/shipt/specter/tree/master.svg?style=svg&circle-token=00862a45c139d2a1a28c93ca104e38a7a6e3e83e)](https://circleci.com/gh/shipt/specter/tree/master)
 ![Specter Screenshot](/readmeFiles/SpecterScreenShot.gif)
 
 Specter is an attack map style visualization that parses nginx access logs. Specter then displays the source ip's location, the nginx's ip's location, and the http status on a world map. 
@@ -141,4 +141,3 @@ To update versions, run the [provided python script](scripts/version.py) and fol
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-

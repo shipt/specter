@@ -1,0 +1,208 @@
+version: 2.1
+jobs:
+  test:
+    working_directory: /go/src/github.com/shipt/specter
+    docker:
+      - image: circleci/golang:1.12
+    environment:
+      - GOCACHE: "/tmp/go/cache"
+      - DEP_VERSION: 0.4.1
+      - TEST_RESULTS: /tmp/test-results # path to where test results will be saved
+      - GOMODULE: off #https://github.com/goreleaser/goreleaser/issues/1005
+    steps:
+      - checkout
+      - run: mkdir -p $TEST_RESULTS # create the test results directory
+      - run: GO111MODULE=off go get github.com/jstemmer/go-junit-report
+      - restore_cache:
+          key: gopkg-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
+          paths:
+              - /go/src/github.com/shipt/specter/vendor
+      - run:
+          name: download-libraries
+          command: |
+            if [ ! -d /go/src/github.com/shipt/specter/vendor ]; then
+                curl -L -s https://github.com/golang/dep/releases/download/v${DEP_VERSION}/dep-linux-amd64 -o /go/bin/dep
+                chmod +x /go/bin/dep
+                /go/bin/dep ensure -vendor-only
+            fi
+      - save_cache:
+          key: gopkg-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
+          paths:
+              - /go/src/github.com/shipt/specter/vendor
+      - restore_cache:
+          keys:
+              - build-cache-{{ .Branch }}-{{ .Environment.CIRCLE_PREVIOUS_BUILD_NUM }}
+          paths:
+              - /tmp/go/cache
+      - run:
+          name: test
+          command: |
+            mkdir -p $GOCACHE
+            trap "go-junit-report <${TEST_RESULTS}/go-test.out > ${TEST_RESULTS}/go-test-report.xml" EXIT
+            go test -p 6 -race ./... | tee ${TEST_RESULTS}/go-test.out
+      - run:
+          name: test frontend
+          command: |
+            cd web/public
+      - store_artifacts: # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
+          path: /tmp/test-results
+          destination: raw-test-output
+      - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+          path: /tmp/test-results
+  build:
+    working_directory: /go/src/github.com/shipt/specter
+    docker:
+      - image: circleci/golang:1.12
+    environment:
+      - GOCACHE: "/tmp/go/cache"
+      - DEP_VERSION: 0.4.1
+      - TEST_RESULTS: /tmp/test-results # path to where test results will be saved
+    steps:
+      - checkout
+      - restore_cache:
+          key: gopkg-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
+          paths:
+              - /go/src/github.com/shipt/specter/vendor
+      - run:
+          name: download-libraries
+          command: |
+            if [ ! -d /go/src/github.com/shipt/specter/vendor ]; then
+                curl -L -s https://github.com/golang/dep/releases/download/v${DEP_VERSION}/dep-linux-amd64 -o /go/bin/dep
+                chmod +x /go/bin/dep
+                /go/bin/dep ensure -vendor-only
+            fi
+      - save_cache:
+          key: gopkg-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
+          paths:
+              - /go/src/github.com/shipt/specter/vendor
+      - restore_cache:
+          keys:
+              - build-cache-{{ .Branch }}-{{ .Environment.CIRCLE_PREVIOUS_BUILD_NUM }}
+          paths:
+              - /tmp/go/cache
+      - run:
+          name: build
+          command: |
+            mkdir -p $GOCACHE
+            go build -v ./cmd/specter/main.go
+            go build -v ./cmd/specter-data/main.go
+      - save_cache:
+          key: build-cache-{{ .Branch }}-{{ .Environment.CIRCLE_BUILD_NUM }}
+          paths:
+              - /tmp/go/cache
+  build-docker: 
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: 
+          name: Build Specter Image
+          command: |
+                docker build -t shipt/specter:latest -f ./specter.Dockerfile .
+                docker build -t shipt/specter-data:latest -f ./specter-data.Dockerfile .
+      - run:
+          name: Archive Specter Image
+          command: |
+                docker save -o specter.tar shipt/specter:latest
+                docker save -o specter-data.tar shipt/specter-data:latest
+      - persist_to_workspace:
+          root: .
+          paths: 
+            - ./specter.tar
+            - ./specter-data.tar
+  publish-image:
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - attach_workspace:
+         at: /tmp/workspace
+      - setup_remote_docker
+      - run:
+          name: Load Archived Image
+          command: |
+                docker load -i /tmp/workspace/specter.tar
+                docker load -i /tmp/workspace/specter-data.tar
+      - run:
+          name: Publish Docker Image
+          command: |
+                echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+                IMAGE_TAG=${CIRCLE_TAG/v/''}
+                docker tag shipt/specter:latest shipt/specter:$IMAGE_TAG
+                docker tag shipt/specter-data:latest shipt/specter-data:$IMAGE_TAG
+                docker push shipt/specter:latest
+                docker push shipt/specter-data:latest
+                docker push shipt/specter:$IMAGE_TAG
+                docker push shipt/specter-data:$IMAGE_TAG
+
+  release:
+    working_directory: /go/src/github.com/shipt/specter
+    docker:
+      - image: circleci/golang:1.10
+    environment:
+      - GOCACHE: "/tmp/go/cache"
+      - DEP_VERSION: 0.4.1
+    steps:
+      - checkout
+      - restore_cache:
+          key: gopkg-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
+          paths:
+              - /go/src/github.com/shipt/specter/vendor
+      - run:
+          name: download-libraries
+          command: |
+            if [ ! -d /go/src/github.com/shipt/specter/vendor ]; then
+                curl -L -s https://github.com/golang/dep/releases/download/v${DEP_VERSION}/dep-linux-amd64 -o /go/bin/dep
+                chmod +x /go/bin/dep
+                /go/bin/dep ensure -vendor-only
+            fi
+      - save_cache:
+          key: gopkg-{{ .Branch }}-{{ checksum "Gopkg.lock" }}
+          paths:
+              - /go/src/github.com/shipt/specter/vendor
+      - restore_cache:
+          keys:
+              - build-cache-{{ .Branch }}-{{ .Environment.CIRCLE_PREVIOUS_BUILD_NUM }}
+          paths:
+              - /tmp/go/cache
+      - run: curl -sL https://git.io/goreleaser | bash
+workflows:
+  version: 2
+  test_and_build:
+    jobs:
+      - test
+      - build
+  release:
+    jobs:
+      - test:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+      - build-docker:
+          requires:
+            - test
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+      - publish-image:
+          requires:
+            - test
+            - build-docker
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+      - release:
+          requires:
+            - test
+            - publish-image
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/

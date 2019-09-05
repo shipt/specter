@@ -60,7 +60,7 @@ class App extends React.PureComponent {
 
     // read app version
     // MUST happen before HEAD /version, which polls every so often
-    fetch('package.json')
+    fetch('/version', { method: 'HEAD' })
       .then(res => {
         self.appVersion = res.headers.get('Version')
       });

@@ -1,0 +1,34 @@
+documentation:
+- readmeFiles/*
+- ATTRIBUTIONS.md
+- CONTRIBUTING.md
+- README.md
+- LICENSE
+
+ci:
+- .circleci/*
+
+workflows:
+- .github/workflows/*
+
+specter:
+- cmd/specter/*
+- internal/webServer/*
+- internal/broadcast/*
+- internal/logprocessor/*
+- internal/maxmind/*
+- internal/ttlcache/*
+
+specter-data:
+- cmd/specter-data/*
+- internal/dataServer/*
+
+scripts:
+- scripts/*
+
+web:
+- web/*
+- web/**/*
+
+dependencies:
+- Gopkg.toml

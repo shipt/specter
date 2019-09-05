@@ -1,0 +1,4 @@
+{
+  "contributors": ["wesleyorama-shipt"],
+  "message": "We require contributors to sign our Contributor License Agreement, and we don\"t have {{usersWithoutCLA}} on file. In order for us to review and merge your code, please review the contributing.md file in the root of this repo."
+}
