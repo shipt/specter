@@ -4,7 +4,7 @@
 We are glad you are here! We think it's awesome that you want to spend time helping us make Specter even better. We really value the community we get to be a part of, and we are grateful for your contribution. 
 
 A quick requirement for Non-Shipt contributors:
-  * [Signed Contribution Agreement]()
+  * [Signed Contribution Agreement](https://github.com/shipt/specter/files/3579889/Shipt.Inc.Open.Source.Contributor.License.Agreement.docx)
 
 ## How to Contribute to Specter
 You meet the requirement, and you're all set to start adding to this project. What's next? 
