@@ -111,16 +111,16 @@ Note: You will probably want to set some other ENV vars in order to get steward 
 
 ## Deployment
 
-1. Download the appropriate version from the Releases(link when repo is made) page.
+1. Download the appropriate version from the [Releases](https://github.com/shipt/specter/releases) page.
 2. Deploy the Specter package to where you plan on running the Specter Webserver.  
-    - Start Specter with the -db={{Where your GeoLite2-City database is}} -mbat={{Your MapBox Access Token}} flags.
+    - Start Specter with the `-db={{Where your GeoLite2-City database is}}` `-mbat={{Your MapBox Access Token}}` flags.
 3. Deploy the Specter-Data package to all NGINX servers you wish to monitor.
-    - Start Specter-Data with the -log ./scripts/access.log flag and any other applicable flags.
+    - Start Specter-Data with the `-log ./scripts/access.log` flag and any other applicable flags.
 
 
 ## Attributions
 
-[Attributions](ATTRIBUTIONS.md)
+Read the [Attributions](ATTRIBUTIONS.md) here. 
 
 ## Contributing
 
@@ -134,7 +134,7 @@ To update versions, run the [provided python script](scripts/version.py) and fol
 
 ## Maintainers
 
-[Maintainers](MAINTAINERS.md)
+To find out who our Maintainers are, check out: [MAINTAINERS.md](MAINTAINERS.md)
 
 ## License
 
