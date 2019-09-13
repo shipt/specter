@@ -134,9 +134,9 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 To update versions, run the [provided python script](scripts/version.py) and follow the prompts.
 
-## Authors
+## Maintainers
 
-[Authors](AUTHORS.md)
+[Maintainers](MAINTAINERS.md)
 
 ## License
 
