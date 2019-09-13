@@ -13,7 +13,7 @@ To read more about, how to run, and how to develop Specter, check out our [wiki]
       - [Golang](#golang)
       - [Frontend](#frontend-web/public)
     - [Installing](#installing)
-      - [Running Specter in the Development Environment](#running-specter-in-the-development-environment)
+      - [Running Specter in Your Development Environment](#running-specter-in-your-development-environment)
     - [Running the Tests](#running-the-tests)
       - [What We Test](#what-we-test)
       - [Coding Style](#coding-style)
@@ -57,7 +57,7 @@ npm run build
 2. From your local repository, run ```dep ensure```.
 3. From your local repository, ```cd web/public``` and run ```npm install```.
 
-#### Running Specter in the Development Environment
+#### Running Specter in Your Development Environment
 
 1. From your local repository, start the Specter webserver:
 ```bash
@@ -107,7 +107,7 @@ Your code editor should be setup to run tests on save. However, to run the tests
    docker run <<YOUR_IMAGE_FROM_STEP_3>>
    ```
 
-Note: You will probably want to set some other ENV vars in order to get steward working for you. The ENV vars can be found [here](https://github.com/shipt/specter/wiki/Running-Specter).
+Note: You will probably want to set some other ENV vars in order to get Specter working for you. The ENV vars can be found [here](https://github.com/shipt/specter/wiki/Running-Specter).
 
 ## Deployment
 
