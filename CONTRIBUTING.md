@@ -1,14 +1,10 @@
 # Contributing to Specter
 
 ## Welcome
-We are glad you are here! We think it's awesome that you want to spend time helping us make Specter even better. We really value the community we get to be a part of, and we are grateful for your contribution. 
+We are glad you are here! We think it's awesome that you want to spend time helping us make Specter even better. We really value the community we get to be a part of, and we are grateful for your contribution.
 
-A quick requirement for contributors:
-* Ensure your Github email address matches the address that will be used to sign the CLA
-  - Your Github email address must match the same address you use when signing the CLA. Github has [documentation](https://help.github.com/articles/setting-your-commit-email-address-on-github/) on setting email addresses.
-  - You must also set your git email to match this email address.
-  - If you already submitted a PR, you can correct your user.name and user.email and then use git commit `--amend --reset-author` and then git push `--force` to correct the PR.
-
+Contribution requires signing a Contributor License Agreement (CLA) via HelloSign, a process automated as a part of a pull request.  Your Github email address must match the email address used to sign the CLA. Github has [documentation](https://help.github.com/articles/setting-your-commit-email-address-on-github/) on setting email addresses. Your git email must also match this email address.
+  
 ## How to Contribute to Specter
 
 The basic workflow:
@@ -23,6 +19,7 @@ The basic workflow:
 5. If you haven't signed our CLA before, then you will receive an email from HelloSign to sign the CLA.
     * The CLA request will be sent to the email address associated with your github account.
     * You cannot have your PR merged without signing the PR.
+    * If you already submitted a PR and need to correct your user.name and/or user.email please do so and then use `git commit --amend --reset-author` and then `git push --force` to correct the PR.
 6. Request review from one of our maintainers. 
 7. Get Approval. We'll let you know if there are any changes that are needed. 
 8. Boom! You can merge your changes into Specter.
