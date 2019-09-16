@@ -5,14 +5,13 @@ We are glad you are here! We think it's awesome that you want to spend time help
 
 A quick requirement for contributors:
 * Complete the Signing Process
-  - After creating your account, follow the instructions to complete the signing process through HelloSign.
+  - After creating your github account, follow the instructions from the CLA bot on your first commit to sign the CLA.
 * Ensure your Github email address matches the address used to sign the CLA
   - Your Github email address must match the same address you use when signing the CLA. Github has [documentation](https://help.github.com/articles/setting-your-commit-email-address-on-github/) on setting email addresses.
   - You must also set your git email to match this email address.
   - If you already submitted a PR, you can correct your user.name and user.email and then use git commit `--amend --reset-author` and then git push `--force` to correct the PR.
 
 ## How to Contribute to Specter
-You meet the requirement, and you're all set to start adding to this project. What's next? 
 
 The basic workflow:
 1. You have an idea or see something that you want to fix, so ...
