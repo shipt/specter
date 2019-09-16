@@ -7,7 +7,8 @@ assignees: wesleyorama-shipt, bassman7689
 
 ---
 
-**Describe the bug**
+**Describe the Bug**
+
 A clear and concise description of what the bug is.
 
 **To Reproduce**
