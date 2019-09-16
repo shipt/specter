@@ -1,0 +1,24 @@
+{
+  "name": "Specter",
+  "version": "3.0.18",
+  "description": "Attack map style to display Shipt traffic",
+  "main": "app.dev.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "build": "npx babel app.dev.js --out-file app.min.js --presets react-app/prod,minify",
+    "watch": "npx babel app.dev.js --watch --out-file app.min.js --presets react-app/prod"
+  },
+  "author": "Josh Flayhart",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-minify": "^0.5.0",
+    "babel-preset-react-app": "^3.1.2"
+  },
+  "dependencies": {
+    "braces": "^3.0.2",
+    "lodash": "^4.17.15"
+  }
+}
