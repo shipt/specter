@@ -60,7 +60,7 @@ func (c *Client) parseResponse(body []byte) ([]byte, error) {
 
 	conn := connection{}
 	conn.XFwdFor = rb.XFwdFor
-	if conn.XFwdFor == "" {
+	if conn.XFwdFor == "" || conn.XFwdFor == "-" {
 		conn.SrcIP = rb.SrcIP
 	} else {
 		conn.SrcIP = rb.XFwdFor
