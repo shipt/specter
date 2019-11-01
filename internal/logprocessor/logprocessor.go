@@ -21,11 +21,13 @@ type params struct {
 	SrcIP      string `json:"src_ip"`
 	DstIP      string `json:"dst_ip"`
 	HTTPStatus string `json:"http_status"`
+	XFwdFor    string `json:"http_x_forwarded_for"`
 }
 
 type connection struct {
 	DstIP      string
 	SrcIP      string
+	XFwdFor    string
 	SrcLat     float32
 	SrcLong    float32
 	DstLat     float32
@@ -57,7 +59,13 @@ func (c *Client) parseResponse(body []byte) ([]byte, error) {
 	}
 
 	conn := connection{}
-	conn.SrcIP = rb.SrcIP
+	conn.XFwdFor = rb.XFwdFor
+	if conn.XFwdFor == "" {
+		conn.SrcIP = rb.SrcIP
+	} else {
+		conn.SrcIP = rb.XFwdFor
+	}
+
 	conn.HTTPStatus = rb.HTTPStatus
 
 	if ok := ipCache.Exist(conn.SrcIP); !ok {
