@@ -26,10 +26,12 @@ type Template struct {
 var upgrader = websocket.Upgrader{}
 var db string
 var mbat string
+var ver string
 
 func init() {
 	flag.StringVar(&db, "db", "", "Location of the maxmind DB")
 	flag.StringVar(&mbat, "mbat", "", "MapBox Access Token")
+	flag.StringVar(&ver, "ver", "./VERSION", "Specter version")
 }
 
 func wsWrite(broadcaster *broadcast.WebsocketBroadcaster) func(c echo.Context) error {
@@ -58,7 +60,7 @@ func logs(lp *logprocessor.Client) func(c echo.Context) error {
 
 func version() func(c echo.Context) error {
 	return func(c echo.Context) error {
-		fileBytes, err := ioutil.ReadFile("/go/src/github.com/shipt/specter/VERSION")
+		fileBytes, err := ioutil.ReadFile(ver)
 		if err != nil {
 			return err
 		}
