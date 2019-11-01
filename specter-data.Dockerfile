@@ -9,5 +9,6 @@ FROM alpine
 COPY --from=builder /go/src/github.com/shipt/specter/specter-data /app/
 RUN apk update
 RUN apk upgrade
+RUN apk add ca-certificates
 WORKDIR /app
 CMD ["./specter-data"]
