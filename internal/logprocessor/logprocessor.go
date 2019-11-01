@@ -60,10 +60,12 @@ func (c *Client) parseResponse(body []byte) ([]byte, error) {
 
 	conn := connection{}
 	conn.XFwdFor = rb.XFwdFor
-	if conn.XFwdFor == "" || conn.XFwdFor == "-" {
-		conn.SrcIP = rb.SrcIP
+	if conn.XFwdFor != "" {
+		if conn.XFwdFor != "-" {
+			conn.SrcIP = rb.XFwdFor
+		}
 	} else {
-		conn.SrcIP = rb.XFwdFor
+		conn.SrcIP = rb.SrcIP
 	}
 
 	conn.HTTPStatus = rb.HTTPStatus
