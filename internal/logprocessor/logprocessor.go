@@ -62,15 +62,16 @@ func (c *Client) parseResponse(body []byte) ([]byte, error) {
 
 	conn := connection{}
 
-	validIP := net.ParseIP(rb.XFwdFor)
+	candidate := rb.XFwdFor
+	if strings.Contains(rb.XFwdFor, ",") {
+		parsedIPs := strings.Split(rb.XFwdFor, ",")
+		candidate = parsedIPs[0]
+	}
+
+	conn.SrcIP = candidate
+	validIP := net.ParseIP(candidate)
 	if validIP.To4() == nil {
 		conn.SrcIP = rb.SrcIP
-	}
-	if strings.Contains(rb.XFwdFor, ",") {
-		parsedIP := strings.Split(rb.XFwdFor, ",")
-		conn.SrcIP = parsedIP[0]
-	} else {
-		conn.SrcIP = rb.XFwdFor
 	}
 
 	conn.HTTPStatus = rb.HTTPStatus
