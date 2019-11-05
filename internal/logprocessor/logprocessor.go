@@ -3,6 +3,7 @@ package logprocessor
 import (
 	"encoding/json"
 	"net"
+	"strings"
 
 	"github.com/shipt/specter/internal/ttlcache"
 
@@ -60,8 +61,12 @@ func (c *Client) parseResponse(body []byte) ([]byte, error) {
 	}
 
 	conn := connection{}
-
-	conn.SrcIP = rb.XFwdFor
+	if strings.Contains(rb.XFwdFor, ",") {
+		parsedIP := strings.Split(rb.XFwdFor, ",")
+		conn.SrcIP = parsedIP[0]
+	} else {
+		conn.SrcIP = rb.XFwdFor
+	}
 	validIP := net.ParseIP(rb.XFwdFor)
 	if validIP.To4() == nil {
 		conn.SrcIP = rb.SrcIP
