@@ -92,7 +92,7 @@ while True:
     #     upstreamResponseTime + upstreamConnectTime
     # Open access.log (create it if it doesnt exist) and set it to append mode.
     # Using with will autoclose the file, even if there is an exception.
-    with open('access.log', 'a') as f:
+    with open('access2.log', 'a') as f:
         # the surrounding single ticks are from nginx.
         f.write(log + "\n")
     f.closed

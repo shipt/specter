@@ -82,3 +82,6 @@ typings/
 .env
 .env.test
 
+#local testing files
+nginx.conf
+GeoLite2-City.mmdb
