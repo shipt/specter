@@ -52,7 +52,6 @@ func (w *WebsocketBroadcaster) Broadcast() {
 						}).Debug("Error writing to websocket")
 						w.websockets = w.websockets[:i+copy(w.websockets[i:], w.websockets[i+1:])]
 						ws.Close()
-						w.m.Unlock()
 					}
 				}
 				w.m.Unlock()
