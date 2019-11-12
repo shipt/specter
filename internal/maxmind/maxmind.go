@@ -24,8 +24,8 @@ type MaxMind struct {
 
 // New creates a new maxMind reader.
 func New(filename string) (MaxMind, error) {
-
 	mmdb := flag.Lookup("db").Value.(flag.Getter).Get().(string)
+	println("Maxmind DB found at ", mmdb)
 	db, err := maxminddb.Open(mmdb)
 	if err != nil {
 		return MaxMind{}, fmt.Errorf("Failed opening the MaxMind db: %+v", err)
