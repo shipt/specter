@@ -70,7 +70,7 @@ func (c *Client) parseResponse(body []byte) ([]byte, error) {
 
 	conn.SrcIP = candidate
 	validIP := net.ParseIP(candidate)
-	if validIP.To4() == nil {
+	if validIP == nil {
 		conn.SrcIP = rb.SrcIP
 	}
 

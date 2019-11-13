@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from ipaddress import IPv4Network, IPv4Address
+from ipaddress import IPv4Network, IPv4Address, IPv6Network, IPv6Address
 from time import sleep
 from random import randint
 from random import getrandbits
@@ -53,6 +53,7 @@ remoteUser = '- '
 timeLocal = '[14/Jan/2019:19:38:45 +0000] '
 request = '"POST / HTTP/1.1" '
 # status = '200 '
+requestId = '"5f222ae5938482c32a822dbf15e19f0f" '
 bodyBytesSent = '2105 '
 httpReferer = '"http://localhost:8080/" '
 httpUserAgent = '"Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16C104/ndbflbhxuptclhugenrdeeiocpjxvttm" '
@@ -61,6 +62,8 @@ requestTime = '"0.307" '
 upstreamResponseTime = '"0.296" '
 upstreamConnectTime = '"0.001"'
 subnets = ["24.0.0.0/8", "32.0.0.0/8"]
+ipv6 = ["2600:1700:9450:5db0:f9d1:be3e:d48c:743b", "2601:282:c02:63f0:581:2ab4:c407:da4e",
+        "2600:1700:e1c0:60f0:64f6:c41f:423d:36b8", "2601:2c4:4201:4cb0:38a7:ebae:4598:b5a6"]
 
 
 # --Writing the log file--
@@ -75,17 +78,21 @@ while True:
     # here, we combine the subnet and the random bits
     # to get an IP address from the previously specified subnet
     addr = IPv4Address(subnet.network_address + bits)
+    addr6 = random.choice(ipv6)
     addr_str = str(addr)
+    addrs = [addr_str, addr6]
     # have to add a space at the end for log formatting
     remoteAddr = addr_str + " "
+    httpXForwardedForS = addr6
 
     # --Logfile Generation--
     twohundreds = 100 - (fourErrs + fiveErrs)
     statusList = [200] * twohundreds + [404] * fourErrs + [503] * fiveErrs
     status = random.choice(statusList)
-    log = host + remoteAddr + "- " + remoteUser + timeLocal + request + str(status) + " " + bodyBytesSent + httpReferer + \
-        httpUserAgent + httpXForwardedFor + requestTime + \
-        upstreamResponseTime + upstreamConnectTime
+    log = remoteAddr + str(status) + " " + httpXForwardedForS
+    # log = host + remoteAddr + "- " + remoteUser + timeLocal + request + str(status) + " " + bodyBytesSent + httpReferer + \
+    # httpUserAgent + httpXForwardedFor + requestId + requestTime + \
+    #     upstreamResponseTime + upstreamConnectTime
     # Open access.log (create it if it doesnt exist) and set it to append mode.
     # Using with will autoclose the file, even if there is an exception.
     with open('access.log', 'a') as f:
