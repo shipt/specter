@@ -24,10 +24,12 @@ import (
 var previousOffset int64
 
 type msg struct {
-	SrcIP      string `json:"src_ip"`
-	DstIP      string `json:"dst_ip"`
-	HTTPStatus string `json:"http_status"`
-	XFwdFor    string `json:"http_x_forwarded_for"`
+        //TimeLocal  string `json:"time_local"`
+	SrcIP      string  `json:"src_ip"`
+	DstIP      string  `json:"dst_ip"`
+	HTTPStatus string  `json:"http_status"`
+	XFwdFor    string  `json:"http_x_forwarded_for"`
+    HostProxy  string  `json:"host_proxy,omitempty"`
 }
 
 type tailReader struct {
@@ -52,16 +54,22 @@ func init() {
 }
 
 func (t *tailReader) Read(b []byte) (int, error) {
+	fmt.Println("Entering read")
 	if t.cur.Len() == 0 {
 		t.cur.WriteString((<-t.Lines).Text)
+		//fmt.Println(t.cur.WriteByte('\n'))
 		t.cur.WriteByte('\n')
 	}
+ 	fmt.Println("passed if block")
 
 	n, err := t.cur.Read(b)
+	//fmt.Printf("Error is: %+v",err)
 	if err == io.EOF {
 		return n, nil
 	}
-
+	fmt.Println("printing n")
+	fmt.Println(n)
+	fmt.Println("Exiting the read")
 	return n, err
 }
 
@@ -92,13 +100,20 @@ func sendMessage(url string, mBytes []byte) error {
 
 func processLog(reader ngninxLogReader, ip net.IP) (msg, error) {
 
+	fmt.Println("Entering process log")
+	//fmt.Println(reader.Read())
 	rec, err := reader.Read()
+ 	fmt.Printf("Proceeding after read")
+	//fmt.Println("read")
 	if err == io.EOF {
+		fmt.Println("Eof error")
 		return msg{}, nil
 	}
 	if err != nil {
 		return msg{}, errors.Wrap(err, "error reading the log file")
 	}
+        fmt.Println("Printing contents of rec")
+        fmt.Println(rec)
 	// Process the record...
 	ra, err := rec.Field("remote_addr")
 	if err != nil {
@@ -121,14 +136,14 @@ func processLog(reader ngninxLogReader, ip net.IP) (msg, error) {
 		}).Warn("error getting http_x_forwarded_for from the access.log")
 		return msg{}, nil
 	}
-	p, err := rec.Field("rand_host")
-    if err != nil {
-        log.WithFields(log.Fields{
-            "Error": err,
-        }).Warn("error getting the remote address from the access.log")
-        return msg{}, nil
-    }
-	return msg{SrcIP: ra, DstIP: ip.String(), HTTPStatus: s, XFwdFor: x, HostProxy: p}, nil
+    	p, err := rec.Field("rand_host")
+    	if err != nil {
+        	log.WithFields(log.Fields{
+            		"Error": err,
+        	}).Warn("error getting the remote address from the access.log")
+        	return msg{}, nil
+    	}
+	return msg{SrcIP: ip.String(), DstIP: ra, HTTPStatus: s, XFwdFor: x, HostProxy: p}, nil
 }
 
 // Start starts and runs the data server
@@ -146,7 +161,7 @@ func Start() {
 	if !cmd.IsFlagPassed("server") {
 		log.Warn(`you did not set a server to send data to, using localhost:1323`)
 	}
-
+        
 	log.Info("Starting Dataserver")
 	log.Debugf("conf flag is set to: %s", conf)
 	log.Debugf("format flag is set to: %s", format)
@@ -177,14 +192,18 @@ func Start() {
 	defer cf.Close()
 
 	reader, err := gonx.NewNginxReader(logReader(tail), cf, format)
+        fmt.Println("Contents of reader")
+        fmt.Println(reader)
 	if err != nil {
 		log.WithFields(log.Fields{
 			"Error": err,
 		}).Fatal("error creating reader the nginx config file")
 	}
-
+        
 	for {
+		fmt.Println("Enttering for loop")
 		m, err := processLog(reader, ip)
+                fmt.Println("Finished process log")
 		if err != nil {
 			log.WithFields(log.Fields{
 				"Error": err,
