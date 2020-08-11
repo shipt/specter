@@ -64,6 +64,7 @@ upstreamConnectTime = '"0.001"'
 subnets = ["24.0.0.0/8", "32.0.0.0/8"]
 ipv6 = ["2600:1700:9450:5db0:f9d1:be3e:d48c:743b", "2601:282:c02:63f0:581:2ab4:c407:da4e",
         "2600:1700:e1c0:60f0:64f6:c41f:423d:36b8", "2601:2c4:4201:4cb0:38a7:ebae:4598:b5a6"]
+proxy_host = ["test.com", "test1.com", "test2.com"]
 
 
 # --Writing the log file--
@@ -89,7 +90,8 @@ while True:
     twohundreds = 100 - (fourErrs + fiveErrs)
     statusList = [200] * twohundreds + [404] * fourErrs + [503] * fiveErrs
     status = random.choice(statusList)
-    log = remoteAddr + str(status) + " " + httpXForwardedForS
+    randHost = random.choice(proxy_host)
+    log = remoteAddr + str(status) + " " + httpXForwardedForS + " " + randHost
     # log = host + remoteAddr + "- " + remoteUser + timeLocal + request + str(status) + " " + bodyBytesSent + httpReferer + \
     # httpUserAgent + httpXForwardedFor + requestId + requestTime + \
     #     upstreamResponseTime + upstreamConnectTime
