@@ -85,3 +85,7 @@ typings/
 #local testing files
 nginx.conf
 GeoLite2-City.mmdb
+.idea/misc.xml
+.idea/modules.xml
+.idea/specter.iml
+.idea/vcs.xml
