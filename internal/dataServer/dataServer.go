@@ -122,7 +122,7 @@ func processLog(reader ngninxLogReader, ip net.IP) (msg, error) {
 		}).Warn("error getting http_x_forwarded_for from the access.log")
 		return msg{}, nil
 	}
-	p, err := rec.Field("rand_host")
+	p, err := rec.Field("proxy_host")
 	return msg{SrcIP: ra, DstIP: ip.String(), HTTPStatus: s, XFwdFor: x, HostProxy: p}, nil
 }
 
