@@ -61,6 +61,45 @@ func Test_processLog(t *testing.T) {
 			wantErr: false,
 		},
 		{
+                        name: "Works with additional host_proxy field",
+                        args: args{
+                                reader: fakeLogReader{
+                                        entry: gonx.NewEntry(map[string]string{
+                                                "remote_addr":          "24.172.192.104",
+                                                "status":               "200",
+                                                "http_x_forwarded_for": "8.8.8.8",
+						"rand_host":            "test.com",
+                                        })},
+                                ip: net.IP{},
+                        },
+                        want: msg{
+                                SrcIP:      "24.172.192.104",
+                                DstIP:      "<nil>",
+                                HTTPStatus: "200",
+                                XFwdFor:    "8.8.8.8",
+				HostProxy:  "test.com"},
+                        wantErr: false,
+                },
+		{
+                        name: "Works with host_proxy field being empty",
+                        args: args{
+                                reader: fakeLogReader{
+                                        entry: gonx.NewEntry(map[string]string{
+                                                "remote_addr":          "24.172.192.104",
+                                                "status":               "200",
+                                                "http_x_forwarded_for": "8.8.8.8",
+                                                "rand_host":            "",
+                                        })},
+                                ip: net.IP{},
+                        },
+                        want: msg{
+                                SrcIP:      "24.172.192.104",
+                                DstIP:      "<nil>",
+                                HTTPStatus: "200",
+                                XFwdFor:    "8.8.8.8"},
+                        wantErr: false,
+                },		
+		{
 			name: "Returns msg{} with missing remote_addr",
 			args: args{
 				reader: fakeLogReader{
