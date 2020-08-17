@@ -77,6 +77,7 @@ func (c *Client) parseResponse(body []byte) ([]byte, error) {
 	}
 
 	conn.HTTPStatus = rb.HTTPStatus
+	conn.HostProxy = rb.HostProxy
 
 	if ok := ipCache.Exist(conn.SrcIP); !ok {
 		// we have seen this ip before.
