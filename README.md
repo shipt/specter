@@ -35,7 +35,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 - #### Golang
    - [Go version 1.11+](https://golang.org/)  
-   - For go dependencies this project uses [dep](https://github.com/golang/dep), so ```dep ensure``` will install all needed dependencies. 
+   - For go dependencies this project uses [go modules[(https://golang.org/ref/mod)], so ```go mod download``` will install all needed dependencies. 
 
 - #### Frontend (web/public)
    - [npm](https://www.npmjs.com) must be installed
@@ -54,7 +54,7 @@ npm run build
 ### Installing
 
 1. Clone this repo to your GOPATH.
-2. From your local repository, run ```dep ensure```.
+2. From your local repository, run ```go mod download```.
 3. From your local repository, ```cd web/public``` and run ```npm install```.
 
 #### Running Specter in Your Development Environment
