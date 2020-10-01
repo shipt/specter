@@ -31,4 +31,5 @@ web:
 - web/**/*
 
 dependencies:
-- Gopkg.toml
+- go.sum
+- go.mod
