@@ -3,8 +3,8 @@
 /**
  * Config
  */
-L.mapbox.accessToken = mpapi
 
+L.mapbox.accessToken = mpapi
 const CHECK_VERSION_TIMEOUT_MS = 3000
 const RECONNECT_TIMEOUT_MS = 3000
 const STATUS_COLORS = {
@@ -35,7 +35,10 @@ class App extends React.PureComponent {
       hasError: false,
       rpsCount: 0,
       appVersion: '',
-      reconnectTimeoutMs: RECONNECT_TIMEOUT_MS
+      reconnectTimeoutMs: RECONNECT_TIMEOUT_MS,
+      proxy: [],
+      dropdown: 'all',
+      host_list: []
     }
   }
 
@@ -64,21 +67,34 @@ class App extends React.PureComponent {
       .then(res => {
         self.appVersion = res.headers.get('Version')
       });
-
+    
     this.setupWebSocket();
-  }
+}
 
   setupWebSocket() {
     try {
       let uri = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
       uri += '//' + window.location.host;
-      uri += window.location.pathname + 'ws';
+      uri += window.location.pathname + 'ws'
+      let host_proxy_list = []
       this.ws = new WebSocket(uri);
-
       this.ws.onmessage = (evt) => {
         // exit early if we get bad JSON data
         if (evt.data === '') return
         const wsData = JSON.parse(evt.data)
+
+        if (host_proxy_list.includes(wsData['HostProxy']) === false) {
+          host_proxy_list.push(wsData['HostProxy'])
+        }
+
+        var result = host_proxy_list.map(e => ({id: e, name: e}))
+
+        this.setState({host_list: result});
+
+        if (wsData['HostProxy'])  {
+          if (this.state.dropdown != "all" && wsData['HostProxy'] != this.state.dropdown) return
+        }    
+
         const srcLatLng = new L.LatLng(wsData.SrcLat, wsData.SrcLong);
         const hqLatLng = new L.LatLng(wsData.DstLat, wsData.DstLong);
         requestsPerSecCounter++;
@@ -105,10 +121,10 @@ class App extends React.PureComponent {
         handleRippleWithColor(srcPoint, statusColor);
         handleTrafficWithColor(srcPoint, midPoint, hqPoint, statusColor);
 
-        // log server errors to UI
         if (httpStatus >= 500) {
           this.setErrorLog(`${httpStatus} Error from ${srcLatLng} to ${hqLatLng}`)
-        }
+          }
+        
       };
 
       // event setup for things like rps counters, etc
@@ -168,6 +184,10 @@ class App extends React.PureComponent {
     self.debug = showErrorLogs
   }
 
+  handleProxyChange = (event) => {
+    this.setState({dropdown: event.target.value});
+  }
+
   setErrorLog = log => {
     if (this.state.showErrorLogs) {
       this.setState(prevState => ({ errorLogs: [...prevState.errorLogs, log] }));
@@ -176,17 +196,25 @@ class App extends React.PureComponent {
   }
 
   render() {
-    const { errorLogs, showErrorLogs, rpsCount, appVersion, hasError, reconnectTimeoutMs } = this.state
+    const { host_list } = this.state;
+    let proxyList = host_list.length > 0
+      && host_list.map((item, i) => {
+        return (
+          <option key={i} value={item.id}>{item.name}</option>
+        )
+      }, this);
+    const { errorLogs, showErrorLogs, rpsCount, appVersion, hasError, reconnectTimeoutMs, dropValue } = this.state
     return [
       React.createElement('div', { key: 'map', id: 'map' }),
-      React.createElement(LegendComponent, { key: 'legend', onClick: this.toggleErrorLogger, rpsCount, isDebugging: showErrorLogs, appVersion }),
+      React.createElement(LegendComponent, { key: 'legend', onClick: this.toggleErrorLogger, onProxyChange: this.handleProxyChange, rpsCount, isDebugging: showErrorLogs, appVersion, dropValue, proxyList}),
       React.createElement(ErrorLoggerComponent, { key: 'error-logger', logs: errorLogs, show: showErrorLogs }),
       React.createElement(ReconnectBannerComponent, { key: 'error-banner', show: hasError, reconnectTimeoutMs })
     ]
   }
 }
 
-const LegendComponent = React.memo(({ onClick, innerRef, rpsCount, isDebugging, appVersion }) => (
+
+const LegendComponent = React.memo(({ onClick, onProxyChange, innerRef, rpsCount, isDebugging, appVersion, dropValue, proxyList }) => (
   <div id="legend" ref={innerRef}>
     <div style={{ float: 'right', color: '#888' }}>{appVersion}</div>
     <h2>HTTP Traffic Status</h2>
@@ -194,10 +222,19 @@ const LegendComponent = React.memo(({ onClick, innerRef, rpsCount, isDebugging, 
     <div>2xx Success: <span style={{ color: STATUS_COLORS.success, fontWeight: 'bold' }}>{STATUS_COLORS.success}</span></div>
     <div>4xx Client Error: <span style={{ color: STATUS_COLORS.clientError, fontWeight: 'bold' }}>{STATUS_COLORS.clientError}</span></div>
     <div>5xx Server Error: <span style={{ color: STATUS_COLORS.serverError, fontWeight: 'bold' }}>{STATUS_COLORS.serverError}</span></div>
+    {proxyList.length > 0 && (<form>
+      <label>
+       <select value={dropValue} onChange={onProxyChange}>
+       <option value="all" selected>All Traffic</option> 
+       {proxyList}
+      </select>
+      </label>
+    </form>)}
     <div style={{ float: 'right' }}>Requests Per Second: {rpsCount}</div>
     <button onClick={onClick}>{isDebugging ? 'Disable' : 'Enable'} Debug Mode</button>
   </div>
 ))
+
 
 const ErrorLoggerComponent = React.memo(({ logs, show }) => (
   <div id="error-logger" style={show ? { display: 'block' } : { display: 'none' }}>

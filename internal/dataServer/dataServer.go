@@ -28,6 +28,7 @@ type msg struct {
 	DstIP      string `json:"dst_ip"`
 	HTTPStatus string `json:"http_status"`
 	XFwdFor    string `json:"http_x_forwarded_for"`
+	HostProxy  string `json:"host_proxy,omitempty"`
 }
 
 type tailReader struct {
@@ -121,7 +122,8 @@ func processLog(reader ngninxLogReader, ip net.IP) (msg, error) {
 		}).Warn("error getting http_x_forwarded_for from the access.log")
 		return msg{}, nil
 	}
-	return msg{SrcIP: ra, DstIP: ip.String(), HTTPStatus: s, XFwdFor: x}, nil
+	p, err := rec.Field("proxy_host")
+	return msg{SrcIP: ra, DstIP: ip.String(), HTTPStatus: s, XFwdFor: x, HostProxy: p}, nil
 }
 
 // Start starts and runs the data server

@@ -24,6 +24,7 @@ type params struct {
 	DstIP      string `json:"dst_ip"`
 	HTTPStatus string `json:"http_status"`
 	XFwdFor    string `json:"http_x_forwarded_for"`
+	HostProxy  string `json:"host_proxy,omitempty"`
 }
 
 type connection struct {
@@ -35,6 +36,7 @@ type connection struct {
 	DstLat     float32
 	DstLong    float32
 	HTTPStatus string
+	HostProxy  string
 }
 
 var ipCache *ttlcache.TTLSet
@@ -75,6 +77,7 @@ func (c *Client) parseResponse(body []byte) ([]byte, error) {
 	}
 
 	conn.HTTPStatus = rb.HTTPStatus
+	conn.HostProxy = rb.HostProxy
 
 	if ok := ipCache.Exist(conn.SrcIP); !ok {
 		// we have seen this ip before.
