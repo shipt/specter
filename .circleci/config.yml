@@ -165,7 +165,7 @@ jobs:
               - build-cache-{{ .Branch }}-{{ .Environment.CIRCLE_PREVIOUS_BUILD_NUM }}
           paths:
               - /tmp/go/cache
-      - run: curl -sL https://git.io/goreleaser | bash
+      - run: curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
 workflows:
   version: 2
   test_and_build:
